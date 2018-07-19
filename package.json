@@ -1,13 +1,13 @@
 {
-  "name": "electron-release-s3-sync",
-  "version": "0.1.5",
-  "description": "Syncs github releases with a s3 server for electron-updater to consume.",
+  "name": "bvap-electron-release-s3-sync",
+  "version": "0.0.1",
+  "description": "Sync github releases with a s3 server for electron-updater to consume.",
   "main": "src/index.js",
   "bin": "./src/index.js",
   "scripts": {
     "start": "node -r dotenv/config src/index.js"
   },
-  "repository": "Timer/electron-release-s3-sync",
+  "repository": "baktiaditya/electron-release-s3-sync",
   "author": "Joe Haddad <timer150@gmail.com>",
   "license": "MIT",
   "dependencies": {

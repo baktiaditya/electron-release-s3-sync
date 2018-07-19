@@ -1,30 +1,32 @@
 #!/usr/bin/env node
-
 const co = require('co')
 const { getLatest } = require('./get-latest')
 const progress = require('request-progress')
 const request = require('request')
 const ProgressBar = require('progress')
-const AWS = require('aws-sdk')
-const s3 = require('s3-upload-stream')(new AWS.S3())
 const collect = require('collect-json')
 const nodeUrl = require('url')
 
 const {
   GH_USER,
   GH_TOKEN,
-
   GH_ORG,
   GH_REPO,
-
   AWS_BUCKET,
-  AWS_BUCKET_URL: _AWS_BUCKET_URL
-} = process.env
+  AWS_BUCKET_URL: _AWS_BUCKET_URL,
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_KEY,
+} = process.env;
+
+const AWS = require('aws-sdk')
+AWS.config.update({accessKeyId: AWS_ACCESS_KEY_ID, secretAccessKey: AWS_SECRET_KEY});
+const s3 = require('s3-upload-stream')(new AWS.S3())
+
 const AWS_BUCKET_URL =
   _AWS_BUCKET_URL == null ? null :
-  _AWS_BUCKET_URL.endsWith('/') ?
-  _AWS_BUCKET_URL :
-  `${AWS_BUCKET_URL}/`
+    _AWS_BUCKET_URL.endsWith('/') ?
+      _AWS_BUCKET_URL :
+      `${AWS_BUCKET_URL}/`
 
 if (GH_USER == null || GH_TOKEN == null) {
   throw new Error('You must specify both GH_USER and GH_TOKEN in the env.')
@@ -38,8 +40,12 @@ if (AWS_BUCKET == null || AWS_BUCKET_URL == null) {
   throw new Error('You must specify the AWS bucket and bucket URL you are uploading to.')
 }
 
+if (AWS_ACCESS_KEY_ID == null || AWS_SECRET_KEY == null) {
+  throw new Error('You must specify the AWS access key id and secret key.')
+}
+
 function sync(options = {}) {
-  return co(function*() {
+  return co(function* () {
     const { assets } = yield getLatest({
       user: GH_USER,
       token: GH_TOKEN,
@@ -75,7 +81,7 @@ function sync(options = {}) {
           sendImmediately: true,
         },
       }))
-      const promise_r = new Promise(function(resolve, reject) {
+      const promise_r = new Promise(function (resolve, reject) {
         let rejected = false
         r.once('error', err => {
           rejected = true
