@@ -1,6 +1,6 @@
 {
   "name": "bvap-electron-release-s3-sync",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Sync github releases with a s3 server for electron-updater to consume.",
   "main": "src/index.js",
   "bin": "./src/index.js",
