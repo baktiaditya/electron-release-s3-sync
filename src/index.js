@@ -6,7 +6,7 @@ const request = require('request');
 const ProgressBar = require('progress');
 const collect = require('collect-json');
 const nodeUrl = require('url');
-const { getLatest: cb_getLatest } = require('ghreleases');
+const { getLatest: cbGetLatest } = require('ghreleases');
 
 const {
   GH_USER,
@@ -25,7 +25,7 @@ const getLatest = (auth, org, repo, options) => {
       if (err) reject(err);
       else resolve(release);
     };
-    cb_getLatest(auth, org, repo, options || {}, callback);
+    cbGetLatest(auth, org, repo, options || {}, callback);
   });
 };
 
